@@ -1,9 +1,9 @@
-using GameLobbyApi.Models;
-using GameLobbyApi.Services;
+using backend_api.Models;
+using backend_api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GameLobbyApi.Controllers;
+namespace backend_api.Controllers;
 
 [Authorize]
 [ApiController]
@@ -22,7 +22,7 @@ public class GamesController : ControllerBase
     {
         return await _gamesService.GetAllGames(pageNumber, pageSize);
     }
-    
+
     [HttpGet("{studio}")]
     public async Task<List<Game>> Get(string studio)
     {

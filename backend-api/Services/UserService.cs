@@ -1,13 +1,12 @@
-
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using GameLobbyApi.Models;
+using backend_api.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MongoDB.Driver;
 
-namespace GameLobbyApi.Services;
+namespace backend_api.Services;
 
 public class UserService
 {
@@ -25,7 +24,6 @@ public class UserService
         _usersCollection = mongoDatabase.GetCollection<User>(
             gameLobbyDatabaseSettings.Value.UsersCollectionName);
     }
-
 
     public async Task<User?> GetUser(string id)
     {
@@ -62,7 +60,8 @@ public class UserService
 
         var tokenDescriptor = new SecurityTokenDescriptor()
         {
-            Subject = new ClaimsIdentity(new Claim[]{
+            Subject = new ClaimsIdentity(new Claim[]
+            {
                 new Claim(ClaimTypes.Name, user.Email)
             }),
             Expires = DateTime.UtcNow.AddHours(6),
@@ -74,6 +73,5 @@ public class UserService
         var token = securityTokenHandler.CreateToken(tokenDescriptor);
 
         return securityTokenHandler.WriteToken(token);
-
     }
 }

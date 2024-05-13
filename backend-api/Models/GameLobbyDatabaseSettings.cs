@@ -1,4 +1,4 @@
-namespace GameLobbyApi.Models;
+namespace backend_api.Models;
 
 public class GameLobbyDatabaseSettings
 {

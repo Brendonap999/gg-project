@@ -1,9 +1,9 @@
-using GameLobbyApi.Models;
-using GameLobbyApi.Services;
+using backend_api.Models;
+using backend_api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GameLobbyApi.Controllers;
+namespace backend_api.Controllers;
 
 [Authorize]
 [ApiController]
@@ -17,26 +17,13 @@ public class AuthController : ControllerBase
         _userService = userService;
     }
 
-    // [HttpGet("{id}")]
-    // public async Task<ActionResult<User>> Get(string id)
-    // {
-    //     var user = await _userService.GetUser(id);
-
-    //     if (user is null)
-    //     {
-    //         return NoContent();
-    //     }
-
-    //     return user;
-    // }
-
     [AllowAnonymous]
     [Route("register")]
     [HttpPost]
     public async Task<ActionResult<User>> Create(User user)
     {
         await _userService.CreateUser(user);
-        return Ok(new {user});
+        return Ok(new { user });
     }
 
     [AllowAnonymous]
@@ -51,8 +38,6 @@ public class AuthController : ControllerBase
             return Unauthorized();
         }
 
-        return Ok(new {token, user});
+        return Ok(new { token, user });
     }
-
-
 }

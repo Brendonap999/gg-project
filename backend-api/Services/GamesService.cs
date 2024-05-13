@@ -1,9 +1,8 @@
-
-using GameLobbyApi.Models;
+using backend_api.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 
-namespace GameLobbyApi.Services;
+namespace backend_api.Services;
 
 public class GamesService
 {
@@ -22,17 +21,17 @@ public class GamesService
             gameLobbyDatabaseSettings.Value.GamesCollectionName);
     }
 
-    public async Task<List<Game>> GetAllGames(int pageNumber, int pageSize) 
+    public async Task<List<Game>> GetAllGames(int pageNumber, int pageSize)
     {
         return await _gamesCollection.Find(_ => true).Skip((pageNumber - 1) * pageSize).Limit(pageSize).ToListAsync();
     }
 
-    public async Task<List<Game>> GetGamesByStudio(string studioName) 
+    public async Task<List<Game>> GetGamesByStudio(string studioName)
     {
         return await _gamesCollection.Find(game => game.StudioName == studioName).ToListAsync();
     }
 
-    public async Task<List<string>> GetAllDistinctStudios() 
+    public async Task<List<string>> GetAllDistinctStudios()
     {
         return await _gamesCollection.Distinct(game => game.StudioName, _ => true).ToListAsync();
     }
