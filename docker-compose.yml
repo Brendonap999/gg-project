@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+  mongosetup:
+    image: mongo:latest
+    container_name: mongosetup
+    depends_on:
+      - mongo
+    volumes:
+      - ./backend-api/mongo-init:/data/init
+    entrypoint: ['/bin/bash', '/data/init/load-games.sh']
+
+  backend-api:
+    build:
+      context: ./backend-api
+    container_name: backend-api
+    ports:
+      - '8080:8080'
+    depends_on:
+      - mongo
+    # environment:
+    #   - MONGO_CONNECTION_STRING=mongodb://mongo:27017/your-database
+
+  fe:
+    build:
+      context: ./fe
+    container_name: fe
+    ports:
+      - '3000:80'
+    depends_on:
+      - backend-api
+
+volumes:
+  mongo-data:
